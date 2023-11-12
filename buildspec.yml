@@ -11,10 +11,10 @@ phases:
       - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $REPOSITORY
   build:
     on-failure: ABORT
-      commands:
-        - docker build -t $IMAGE .
-        - docker tag $IMAGE:$IMAGE_TAG $REPOSITORY/$IMAGE:$IMAGE_TAG
+    commands:
+      - docker build -t $IMAGE .
+      - docker tag $IMAGE:$IMAGE_TAG $REPOSITORY/$IMAGE:$IMAGE_TAG
   post_build:
     on-failure: ABORT
-      commands:
-        - docker $REPOSITORY/$IMAGE:$IMAGE_TAG
+    commands:
+      - docker $REPOSITORY/$IMAGE:$IMAGE_TAG
