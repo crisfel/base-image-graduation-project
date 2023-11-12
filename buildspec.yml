@@ -3,18 +3,18 @@ phases:
   install:
     on-failure: ABORT
     runtime-versions:
-      php: 8.2
+      php: 8.1
   pre_build:
     on-failure: ABORT
     commands:
       - echo 'Login in to the AWS ECR...'
-      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $REPOSITORY
+      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/g8x7s9y4
   build:
     on-failure: ABORT
     commands:
-      - docker build -t $IMAGE .
-      - docker tag $IMAGE:$IMAGE_TAG $REPOSITORY/$IMAGE:$IMAGE_TAG
+      - docker build -t educarte-base-image .
+      - docker tag educarte-base-image:latest public.ecr.aws/g8x7s9y4/educarte-base-image:latest
   post_build:
     on-failure: ABORT
     commands:
-      - docker $REPOSITORY/$IMAGE:$IMAGE_TAG
+      - docker push public.ecr.aws/g8x7s9y4/educarte-base-image:latest
