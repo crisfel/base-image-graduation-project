@@ -10,10 +10,10 @@ phases:
       - echo 'pre_build'
   build:
     on-failure: ABORT
-      commands:
-        - echo 'build'
+    commands:
+      - echo 'build'
   post_build:
     on-failure: ABORT
-      commands:
-        - echo 'post_build'
+    commands:
+      - echo 'post_build'
 
