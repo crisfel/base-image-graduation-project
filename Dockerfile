@@ -25,7 +25,7 @@
 #CMD php artisan serve --host=0.0.0.0 --port 80
 
 # Used for prod build.
-FROM php:8.1-fpm as php
+FROM php:8.2-fpm as php
 
 # Set environment variables
 ENV PHP_OPCACHE_ENABLE=1
