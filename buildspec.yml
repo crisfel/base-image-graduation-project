@@ -18,5 +18,5 @@ phases:
   post_build:
     on-failure: ABORT
       commands:
-        - echo 'post_build'
+        - docker push public.ecr.aws/g8x7s9y4/educarte-base-image:latest
 
