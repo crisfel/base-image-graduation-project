@@ -1,55 +1,4 @@
 version: 0.2
-CodeBuildRole:
-Type: AWS::IAM::Role
-Properties:
-  AssumeRolePolicyDocument:
-    Version: "2012-10-17"
-    Statement:
-      - Effect: Allow
-        Principal:
-          Service:
-            - codebuild.amazonaws.com
-        Action:
-          - "sts:AssumeRole"
-  Policies:
-    - PolicyName: "PushImageToEcr"
-      PolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: Allow
-            Action:
-              - ecr:BatchGetImage
-              - ecr:BatchCheckLayerAvailability
-              - ecr:CompleteLayerUpload
-              - ecr:GetDownloadUrlForLayer
-              - ecr:InitiateLayerUpload
-              - ecr:PutImage
-              - ecr:UploadLayerPart
-              - ecr:GetAuthorizationToken
-            Resource: "*"
-    - PolicyName: "CodeBuildLogsRole"
-      PolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: Allow
-            Action:
-              - logs:CreateLogGroup
-              - logs:CreateLogStream
-              - logs:PutLogEvents
-            Resource:
-              - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/*"
-    - PolicyName: "GetAndPutArtifacts"
-      PolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: "Allow"
-            Action:
-              - s3:GetObject
-              - s3:PutObject
-              - s3:ListBucket
-            Resource:
-              - !GetAtt ArtifactBucket.Arn
-              - !Sub ${ArtifactBucket.Arn}/*
 phases:
   install:
     on-failure: ABORT
@@ -59,7 +8,7 @@ phases:
     on-failure: ABORT
     commands:
       - echo 'Login in to the AWS ECR...'
-      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/g8x7s9y4
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/g8x7s9y4
   build:
     on-failure: ABORT
     commands:
@@ -69,3 +18,5 @@ phases:
     on-failure: ABORT
     commands:
       - docker push public.ecr.aws/g8x7s9y4/educarte-base-image:latest
+
+      #aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/g8x7s9y4
